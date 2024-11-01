@@ -67,13 +67,11 @@ public class TraceableAnnotationProcessor  extends AbstractProcessor   {
                         List<? extends Element> elementsMembres = classeDeLaMethodeAnnotee.getEnclosedElements();
 
                         // Isoler les méthodes membres dans une liste
-                        List<Element> membresMethods = elementsMembres.stream()
-                                .filter(e -> e.getKind() == ElementKind.METHOD)
-                                .collect(Collectors.toList());
+                        List<Element> membresMethods = filterElementParGenre(elementsMembres,ElementKind.METHOD);
+
                         // Isoler les constructeurs membres dans une liste
-                        List<Element> membresConstructeurs = elementsMembres.stream()
-                                .filter(e -> e.getKind() == ElementKind.CONSTRUCTOR)
-                                .collect(Collectors.toList());
+                        List<Element> membresConstructeurs = filterElementParGenre(elementsMembres,ElementKind.CONSTRUCTOR);
+
 
                         // Afficher les membres
                         for (Element Element : membresMethods) {
@@ -95,4 +93,13 @@ public class TraceableAnnotationProcessor  extends AbstractProcessor   {
 
         return true;
     }
+
+    private List<Element> filterElementParGenre(List<? extends javax.lang.model.element.Element> elementsMembres, ElementKind genre){
+        return elementsMembres.stream().filter(e -> e.getKind() == genre).collect(Collectors.toList());
+    }
+
+
+
 }
+
+
