@@ -63,14 +63,19 @@ public class TraceableAnnotationProcessor  extends AbstractProcessor   {
                         TypeElement classeDeLaMethodeAnnotee = (TypeElement) element.getEnclosingElement();
                         Name nomDeclassDeElementAnnote = classeDeLaMethodeAnnotee.getQualifiedName();
 
+                        StringBuilder texteAGenerer = new StringBuilder();
+                        ecrireEnteteClasse(classeDeLaMethodeAnnotee,texteAGenerer);
+                        System.out.println("++++++++++++++++++++++++++++++++++++++++++++++");
+                        System.out.println(texteAGenerer);
+
                         // Obtenir les membres de la classe
                         List<? extends Element> elementsMembres = classeDeLaMethodeAnnotee.getEnclosedElements();
 
                         // Isoler les méthodes membres dans une liste
-                        List<Element> membresMethods = filterElementParGenre(elementsMembres,ElementKind.METHOD);
+                        List<Element> membresMethods = filterElementsParGenre(elementsMembres,ElementKind.METHOD);
 
                         // Isoler les constructeurs membres dans une liste
-                        List<Element> membresConstructeurs = filterElementParGenre(elementsMembres,ElementKind.CONSTRUCTOR);
+                        List<Element> membresConstructeurs = filterElementsParGenre(elementsMembres,ElementKind.CONSTRUCTOR);
 
 
                         // Afficher les membres
@@ -94,8 +99,24 @@ public class TraceableAnnotationProcessor  extends AbstractProcessor   {
         return true;
     }
 
-    private List<Element> filterElementParGenre(List<? extends javax.lang.model.element.Element> elementsMembres, ElementKind genre){
+    private List<Element> filterElementsParGenre(List<? extends javax.lang.model.element.Element> elementsMembres, ElementKind genre){
         return elementsMembres.stream().filter(e -> e.getKind() == genre).collect(Collectors.toList());
+    }
+
+    private void ecrireEnteteClasse(TypeElement classeDeLaMethodeAnnotee, StringBuilder texteAGenerer){
+        String nomClasseMere = classeDeLaMethodeAnnotee.getSimpleName().toString();
+        String packageClasse = recupererNomPackage(classeDeLaMethodeAnnotee);
+        String nomClasseGeneree = nomClasseMere + "Logged";
+        texteAGenerer.append("package " + packageClasse + ";\n")
+                .append("import java.util.logging.Logger"+ ";\n")
+                .append("import java.util.logging.Level"+ ";\n")
+                .append("import java.util.logging.ConsoleHandler"+ ";\n")
+                .append("public class "+ nomClasseGeneree + " extends " + nomClasseMere+ "{\n" );
+    }
+
+    private String recupererNomPackage(TypeElement classeDeLaMethodeAnnotee) {
+        PackageElement packageElement = (PackageElement) (classeDeLaMethodeAnnotee.getEnclosingElement());
+            return packageElement.getQualifiedName().toString();
     }
 
 
