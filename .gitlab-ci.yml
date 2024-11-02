@@ -1,0 +1,13 @@
+image: maven:3.8.4-openjdk-17
+
+stages:
+  - build
+
+maven_build:
+  stage: build
+  script:
+    - mvn clean install  # Builds all modules and runs all tests
+  artifacts:
+    when: always
+    reports:
+      junit: /builds/abi_ayad.mohamed_djawad/annotationprocesstraceable/demo/target/surefire-reports/*.xml  # Use relative paths

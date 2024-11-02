@@ -6,8 +6,8 @@ public class AttributLoggerWritter {
 
     public void ecrireAttributLogger(TypeElement classeDeLaMethodeAnnotee, StringBuilder texteAGenerer) {
         texteAGenerer.append("\tprivate static Logger logger = null;\n")
-                .append("\tstatic{\n\t\tlogger = logger.getLogger(\"" +classeDeLaMethodeAnnotee.getQualifiedName() + "\");\n" )
-                .append("\t\tlogger.addHandler(new ConsoleHandler());\n\t}\n");
+                .append("\tstatic {\n\t\tlogger = logger.getLogger(\"" +classeDeLaMethodeAnnotee.getQualifiedName() + "\");\n" )
+                .append("\t\tlogger.addHandler(new ConsoleHandler());\n\t    }\n\n");
     }
 
 

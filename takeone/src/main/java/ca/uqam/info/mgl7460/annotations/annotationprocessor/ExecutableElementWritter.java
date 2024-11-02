@@ -10,11 +10,14 @@ import java.util.Set;
 public class ExecutableElementWritter {
 
 
-    public void ecrireNomEtParam(ExecutableElement elementExecutable, List<? extends VariableElement> parameters, StringBuilder texteAGenerer) {
+    public void ecrireNomEtParam(ExecutableElement elementExecutable, List<? extends VariableElement> parameters, StringBuilder texteAGenerer, String typeDeClasse) {
         if((elementExecutable.getSimpleName().toString()).equals("<init>")) {
             Element elementClass = elementExecutable.getEnclosingElement();
-            texteAGenerer.append(elementClass.getSimpleName().toString())
-                    .append("Logged");
+            if(typeDeClasse.equals("Logged")){
+                texteAGenerer.append(elementClass.getSimpleName().toString()).append("Logged");
+            }else{
+                texteAGenerer.append(elementClass.getSimpleName().toString()).append(" create").append(elementClass.getSimpleName().toString());
+            }
         }else {
             texteAGenerer.append(elementExecutable.getSimpleName().toString());
         }
