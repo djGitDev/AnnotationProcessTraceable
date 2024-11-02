@@ -7,7 +7,7 @@ public class ExempleClass {
 
     private String nom;
 
-    @Traceable(level= "Warning")
+    @Traceable(level= "WARNING")
     public void setNom(String unNom) {
         this.nom = unNom;
     }
