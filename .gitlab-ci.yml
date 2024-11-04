@@ -6,6 +6,7 @@ stages:
 maven_build:
   stage: build
   script:
+    - mvn clean
     - mvn clean install  # Builds all modules and runs all tests
   artifacts:
     
