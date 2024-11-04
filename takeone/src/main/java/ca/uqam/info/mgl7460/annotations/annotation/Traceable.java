@@ -8,6 +8,6 @@ import java.lang.annotation.Target;
 @Retention(RetentionPolicy.RUNTIME) // Disponible lors de la compilation
 @Target(ElementType.METHOD)       // S'applique uniquement aux méthodes
 public @interface Traceable {
-    String level();
+    String level() default "INFO";
 
 }

@@ -7,9 +7,9 @@ import java.io.Writer;
 
 public class SubClasseGenartor {
 
-    public void genererSousClasse(StringBuilder texteAGenerer, String nomClasseMere, Filer filer)  {
+    public void genererSousClasse(StringBuilder texteAGenerer, String nomClasseMere, Filer filer, String typeDeClasse)  {
         try {
-            JavaFileObject file = filer.createSourceFile("generatedClasses." +nomClasseMere+"Logged");
+            JavaFileObject file = filer.createSourceFile("generatedClasses." +nomClasseMere+typeDeClasse);
 
             // Écrire le contenu dans le fichier
             try (Writer writer = file.openWriter()) {

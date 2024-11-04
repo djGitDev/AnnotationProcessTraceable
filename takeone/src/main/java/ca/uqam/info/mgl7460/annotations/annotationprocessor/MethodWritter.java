@@ -5,6 +5,8 @@ import ca.uqam.info.mgl7460.annotations.annotation.Traceable;
 import javax.lang.model.element.ExecutableElement;
 import javax.lang.model.element.VariableElement;
 import javax.lang.model.type.TypeMirror;
+
+import java.util.Iterator;
 import java.util.List;
 
 public class MethodWritter {
@@ -13,11 +15,11 @@ public class MethodWritter {
 
 
 
-    public void ecrireMethodeCourante(ExecutableElement methode, StringBuilder texteAGenerer) {
+    public void ecrireMethodeCourante(ExecutableElement methode, StringBuilder texteAGenerer, String typeDeClasse) {
         if (verifierPresenceAnnotationTraceable(methode)) {
-            redefinirMethodeAnnotee(methode, texteAGenerer);
+            redefinirMethodeAnnotee(methode, texteAGenerer, typeDeClasse);
         } else {
-            redefinirMethodeNonAnnotee(methode, texteAGenerer);
+            redefinirMethodeNonAnnotee(methode, texteAGenerer, typeDeClasse);
         }
     }
 
@@ -26,24 +28,24 @@ public class MethodWritter {
         return methode.getAnnotation(Traceable.class) != null ;
     }
 
-    private void redefinirMethodeNonAnnotee(ExecutableElement methode, StringBuilder texteAGenerer) {
-        ecrireEnteteMethode(methode,texteAGenerer);
+    private void redefinirMethodeNonAnnotee(ExecutableElement methode, StringBuilder texteAGenerer, String typeDeClasse) {
+        ecrireEnteteMethode(methode,texteAGenerer, typeDeClasse);
         ecrireContenuMethodeNonAnnotee(methode,texteAGenerer);
     }
 
 
 
-    private void redefinirMethodeAnnotee(ExecutableElement methode, StringBuilder texteAGenerer) {
+    private void redefinirMethodeAnnotee(ExecutableElement methode, StringBuilder texteAGenerer, String typeDeClasse) {
         ecrireEnteteAnnotation(texteAGenerer);
-        ecrireEnteteMethode(methode,texteAGenerer);
+        ecrireEnteteMethode(methode,texteAGenerer, typeDeClasse);
         ecrireContenuMethodeAnnotee(methode,texteAGenerer);
     }
 
 
-    private void ecrireEnteteMethode(ExecutableElement methode, StringBuilder texteAGenerer) {
+    private void ecrireEnteteMethode(ExecutableElement methode, StringBuilder texteAGenerer, String typeDeClasse) {
         executableElementWritter.ecrireModifieurs(methode.getModifiers(),texteAGenerer);
         ecrireTypeDeRetour(methode.getReturnType(), texteAGenerer);
-        executableElementWritter.ecrireNomEtParam(methode,methode.getParameters(),texteAGenerer);
+        executableElementWritter.ecrireNomEtParam(methode,methode.getParameters(),texteAGenerer, typeDeClasse);
     }
     private void ecrireContenuMethodeAnnotee(ExecutableElement methode, StringBuilder texteAGenerer) {
         ecrireContenuAdditionnel(methode,texteAGenerer);
@@ -74,11 +76,23 @@ public class MethodWritter {
         texteAGenerer.append("\t\tlogger.log(Level." + levelAnnote + ", \"Call to ")
                 .append(methode.getSimpleName().toString()).append("(");
         List<? extends VariableElement> parameters = methode.getParameters();
-        for (VariableElement parameter : parameters) {
+
+        for (Iterator<? extends VariableElement> iterator = parameters.iterator(); iterator.hasNext();) {
+            VariableElement parameter = iterator.next();
             String param = parameter.getSimpleName().toString();
-            texteAGenerer.append(param +": \" + "+ param + " + \")\"").append(", ");
+            texteAGenerer.append(param +": \" + "+ param );
+            if(iterator.hasNext()){
+                texteAGenerer.append(" + \"").append(", ");
+            }else{
+               texteAGenerer.append(" + \")\"").append(", ");
+            }
         }
-        texteAGenerer.delete(texteAGenerer.length() - 2, texteAGenerer.length());
+
+        if (parameters.size() > 0) {
+            texteAGenerer.delete(texteAGenerer.length() - 2, texteAGenerer.length());
+        } else {
+            texteAGenerer.append(")\"");
+        }
         texteAGenerer.append(");\n");
     }
 
