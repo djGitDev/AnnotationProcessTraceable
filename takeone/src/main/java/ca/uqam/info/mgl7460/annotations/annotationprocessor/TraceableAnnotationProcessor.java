@@ -77,16 +77,10 @@ public class TraceableAnnotationProcessor  extends AbstractProcessor   {
                                 }
                                 texteAGenererLogger.append("}");
                                 texteAGenererFactory.append("}");
-
-                                // System.out.println("++++++++++++++++++++++++++++++++++++++++++++++");
-                                // System.out.println(texteAGenererFactory);
-                                // System.out.println(texteAGenererLogger);
                                 
                                 subClassGenerator.genererSousClasse(texteAGenererLogger,nomDeclassDeElementAnnote.toString(),processingEnv.getFiler(),"Logged");
                                 subClassGenerator.genererSousClasse(texteAGenererFactory,nomDeclassDeElementAnnote.toString(),processingEnv.getFiler(),"Factory");
-                                //Afficher le nom de la classe encapsulante
-                                // System.out.println("++++++++++++++++++++++++++++++++++++++++++++++");
-                                // System.out.println(nomDeclassDeElementAnnote.toString());
+                               
                         }
                     }  
                 }
