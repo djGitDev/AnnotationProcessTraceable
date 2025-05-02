@@ -28,8 +28,4 @@ jobs:
     - name: Run tests with Maven
       run: mvn test
 
-    - name: Upload JUnit Test Reports
-      uses: actions/upload-artifact@v2
-      with:
-        name: junit-test-reports
-        path: demo/target/surefire-reports/*.xml  # Chemin relatif des rapports JUnit
+   
